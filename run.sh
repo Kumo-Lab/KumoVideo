@@ -1,0 +1,4 @@
+python inference.py \
+  --ckpt_path "./ckpts" \
+  --output_path "outputs/result.mp4" \
+  --pos_prompt "A breathtaking landscape unfolds, showcasing majestic snow-capped mountains in the foreground, their peaks glistening under a clear blue sky. A pristine river winds gracefully through the valley below, its crisp blue waters reflecting the towering mountains. Lush green pine trees dot the riverbanks, adding a vibrant contrast to the white snow. The scene transitions to a closer view of the river, revealing its crystal-clear current and the rocky bed beneath. In the distance, a waterfall cascades down a rocky cliff, merging seamlessly with the river, while a lone eagle soars above, completing this serene and untouched natural paradise."

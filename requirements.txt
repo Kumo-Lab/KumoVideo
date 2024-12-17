@@ -1,0 +1,9 @@
+torch>=2.5.0
+torchvision>=0.20.0
+diffusers>=0.31.0
+accelerate>=1.1.1
+transformers>=4.46.2
+numpy>=1.26.0
+sentencepiece>=0.2.0
+imageio>=2.35.1
+imageio-ffmpeg>=0.5.1
