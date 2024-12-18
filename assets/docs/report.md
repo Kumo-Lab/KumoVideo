@@ -59,8 +59,11 @@ The main features of the proposed backbone include:
 - **Visual Content Tokenization**: The 3D VAE encodes video latent into a tensor of shape $T\times{H}\times{W}\times{C}$, where T, H, W and C represent the number of frames, height, width, and the number of channels, respectively. To transform these latents into a sequence suitable for the transformer, KumoVideo patches the latents along the H and W dimensions, then flattens them in conjunction with the T dimension, resulting in a sequence of tokens $z_{vision}$ with a length of $\alpha\cdot{T}\cdot{H}\cdot{W}$, where $\alpha$ is the patching coefficient.
 - **Latent Concatenation**: KumoVideo uses T5-XXL as the language model, merging the obtained text tokens $z_{text}$ with visual tokens $z_{vision}$ through concatenation, which serves as the input latent to the MADiT. This approach facilitates mixed attention operations, allowing for a fusion of text with spatial and temporal information. Additionally, this strategy is highly scalable, enabling further concatenation of various modality tokens.
 - **Timestep Renormalization**: Considering that the diffusion model iteratively denoises through timesteps, KumoVideo employs timestep renormalization on the latent at each layer to enable MADiT to perceive different timesteps. The timestep t is embedded into $t_{embed}$, and then $t_{embed}$ is used to renormalize the text tokens $z_{text}$ and visual tokens $z_{vision}$ separately using AdaLN, where f is the scale and shift function.
+
 $$f_{scale}(t_{embed})\cdot{z}+f_{shift}(t_{embed})$$
+
 - **Attention Strategies**: KumoVideo employs both full self-attention and two seperate cross-attentions. For the full self-attention, it flattens and concatenates all text tokens $z_{text}$ and visual tokens $z_{vision}$ containing spatial and temporal information, followed by a full self-attention operation. For the two separate cross-attentions, it uses the text tokens $z_{text}$ or visual tokens $z_{vision}$ as queries, performing cross-attention operations with another set of tokens. The results are then fed into the feedforward layer after full self-attention.
+
 $$SelfAttn(concat[z_{text}, z_{vision}])$$
 $$CrossAttn_{1}(z_{text}, z_{vision}), CrossAttn_{2}(z_{vision}, z_{text})$$
 
