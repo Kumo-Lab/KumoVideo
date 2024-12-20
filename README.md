@@ -6,12 +6,17 @@
 
 **KumoVideo** is an open-source video generation framework based on Diffusion Transformer (DiT). We introduce MADiT (Mix Attention DiT), an advanced architecture that incorporates mix attention mechanisms to further elevate video generation quality and efficiency. KumoVideo demonstrates exceptional capability in producing high-fidelity, visually engaging, and temporally coherent videos, making it highly versatile for diverse applications across various domains. This repository empowers users to perform inference on KumoVideo using consumer-grade GPUs, democratizing access to cutting-edge video generation technology. We are honored to have open-sourced KumoVideo for the benefit of the community and remain dedicated to continuously refining and advancing the project to address the evolving demands of users and developers.
 
+## 🔥 Breaking Updates
+Dec. 20, 2024 🔥 KumoVideo-Turbo has been released! It enables real-time video generation with comparable performance. For more details, see the [report](./assets/docs/turbo_report.md).
+
+Dec. 17, 2024 🔥 KumoVideo and [technical report](./assets/docs/report.md) have been released!
+
 ## 📑 To Do 
 
 - ✅  Release inference code
 - ✅  Release pre-trained models
 - ✅  Release technical report
-- ⏳  Release KumoVideo-Turbo
+- ✅  Release KumoVideo-Turbo
 - ⏳  Support image conditioning
 - ⏳  Release KumoVideo-Pro
 
@@ -58,7 +63,7 @@ You should build a python environment first:
     conda activate KumoVideo
     pip install -r requirements.txt
 
-You can download the model [weights](https://huggingface.co/KumoAnonymous/KumoVideo). It includes the relevant weights and configuration files for the `language model`, `transformer`, `vae`, and `scheduler`. After downloading, place the files in the ckpt directory, and create a test directory within the project directory to store the results. 
+You can download the KumoVideo [weights](https://huggingface.co/KumoAnonymous/KumoVideo) or KumoVideo-Turbo (8 steps) [weights](https://huggingface.co/KumoAnonymous/KumoVideo-Turbo). It includes the relevant weights and configuration files for the `language model`, `transformer`, `vae`, and `scheduler`. After downloading, place the files in the ckpt directory, and create a test directory within the project directory to store the results. 
 
     mkdir outputs
 
@@ -67,7 +72,9 @@ The structure of the entire directory will be as follows:
 ```
 KumoVideo/
 ├── inference.py
+├── inference_turbo.py
 ├── run.sh
+├── run_turbo.sh
 ├── models/
 ├── ckpts/
     ├── scheduler/
@@ -78,9 +85,13 @@ KumoVideo/
 ├── outputs/
 ```
 
-Next, you only need to run the following command to perform inference:
+Next, you only need to run the following command to perform inference for KumoVideo:
 
     bash run.sh
+
+or for KumoVideo-Turbo:
+
+    bash run_turbo.sh
 
 You can generate the desired content by modifying the `pos_prompt`, and you can also add a negative prompt, change the number of inference steps, or set your own random seed. We provide the corresponding interfaces for all these options.
 

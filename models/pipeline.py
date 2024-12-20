@@ -1,3 +1,4 @@
+import inspect
 from typing import List, Optional, Tuple, Union
 
 import torch
@@ -120,6 +121,16 @@ class KumoPipeline(DiffusionPipeline):
         return frames
 
 
+    def prepare_extra_step_kwargs(self, generator):
+        extra_step_kwargs = {}
+
+        accepts_generator = "generator" in set(inspect.signature(self.scheduler.step).parameters.keys())
+        if accepts_generator:
+            extra_step_kwargs["generator"] = generator
+            
+        return extra_step_kwargs
+
+
     @torch.no_grad()
     def __call__(
         self,
@@ -159,6 +170,8 @@ class KumoPipeline(DiffusionPipeline):
         latents = self.prepare_latents(batch_size * num_videos_per_prompt, latent_channels, num_frames, height, width, prompt_embeds.dtype, device, generator, latents)
         timesteps, num_inference_steps = retrieve_timesteps(self.scheduler, num_inference_steps, device, timesteps)
 
+        extra_step_kwargs = self.prepare_extra_step_kwargs(generator)
+
         with self.progress_bar(total=num_inference_steps) as progress_bar:
             for _, t in enumerate(timesteps):
 
@@ -176,7 +189,7 @@ class KumoPipeline(DiffusionPipeline):
                     noise_pred_uncond, noise_pred_text = noise_pred.chunk(2)
                     noise_pred = noise_pred_uncond + guidance_scale * (noise_pred_text - noise_pred_uncond)
 
-                latents = self.scheduler.step(noise_pred, t, latents)[0]
+                latents = self.scheduler.step(noise_pred, t, latents, **extra_step_kwargs)[0]
                 latents = latents.to(prompt_embeds.dtype)
                 progress_bar.update()
 
